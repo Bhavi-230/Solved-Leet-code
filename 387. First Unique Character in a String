@@ -1,0 +1,46 @@
+import java.util.*;
+
+public class Solution {
+    public int firstUniqChar(String s) {
+        Map<Character, Integer> countMap = new HashMap<>();
+        Queue<CharacterIndex> queue = new LinkedList<>();
+
+        
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            countMap.put(ch, countMap.getOrDefault(ch, 0) + 1);
+            queue.offer(new CharacterIndex(ch, i));
+        }
+
+       
+        while (!queue.isEmpty()) {
+            CharacterIndex front = queue.peek();
+            if (countMap.get(front.ch) == 1) {
+                return front.index;
+            }
+            queue.poll();
+        }
+
+        return -1;
+    }
+
+   
+    static class CharacterIndex {
+        char ch;
+        int index;
+
+        CharacterIndex(char ch, int index) {
+            this.ch = ch;
+            this.index = index;
+        }
+    }
+
+   
+    public static void main(String[] args) {
+        Solution sol = new Solution();
+
+        System.out.println(sol.firstUniqChar("leetcode"));      // Output: 0
+        System.out.println(sol.firstUniqChar("loveleetcode"));  // Output: 2
+        System.out.println(sol.firstUniqChar("aabb"));          // Output: -1
+    }
+}
